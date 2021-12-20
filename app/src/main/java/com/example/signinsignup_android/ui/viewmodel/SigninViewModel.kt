@@ -20,7 +20,7 @@ import io.reactivex.schedulers.Schedulers
 import retrofit2.HttpException
 
 class SigninViewModel : ViewModel() {
-    // 로그인 실 여부
+    // 로그인 실행 여부
     private val _isSuccess: SingleLiveEvent<Boolean> =  SingleLiveEvent()
     val isSuccess: LiveData<Boolean> = _isSuccess
 
@@ -31,6 +31,10 @@ class SigninViewModel : ViewModel() {
     // login token
     private val _token: MutableLiveData<String> = MutableLiveData("")
     val token: LiveData<String> = _token
+
+    // login 요청
+    private val _confirm: MutableLiveData<Boolean> = MutableLiveData(false)
+    val confirm: LiveData<Boolean> = _confirm
 
     fun logIn(request: SigninRequestDto) {
          SignDataSource().postSignin(request)

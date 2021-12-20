@@ -27,6 +27,12 @@ class SignupFragment: Fragment() {
     }
 
     private fun initUI() {
+        // 뒤로가기
+        binding.imgBack.setOnClickListener {
+            findNavController().navigateUp()
+        }
+
+        // 회원가입
         binding.tvSignin.setOnClickListener {
             if(inputCheck()){
                 viewModel.signUp(
@@ -40,6 +46,7 @@ class SignupFragment: Fragment() {
             }
         }
 
+        // 회원가입이 성공하면
         viewModel.isSuccess.observe(
             viewLifecycleOwner,
             {
@@ -54,19 +61,20 @@ class SignupFragment: Fragment() {
     }
 
     private fun inputCheck():Boolean{
+        var result = true
         // 빈칸 체크
-        if (binding.edtName.text.isNotEmpty() && binding.edtId.text.isNotEmpty()
-            && binding.edtEmail.text.isNotEmpty() && binding.edtPwd.text.isNotEmpty()
-            && binding.edtPwd.text.isNotEmpty()) {
+        if (binding.edtName.text.isNullOrEmpty() || binding.edtId.text.isNullOrEmpty()
+            || binding.edtEmail.text.isNullOrEmpty() || binding.edtPwd.text.isNullOrEmpty()
+            || binding.edtPwd.text.isNullOrEmpty()) {
             Snackbar.make(binding.root, "입력란을 확인하세요", Snackbar.LENGTH_LONG).show()
-            return false
+            result = false
         }
 
         // 비밀번호 확인
         if ( binding.edtPwd.text.toString() != binding.edtPwd.text.toString()) {
             Snackbar.make(binding.root, "비밀번호를을 확인하세요", Snackbar.LENGTH_LONG).show()
-            return false
+            result = false
         }
-        return true
+        return result
     }
 }

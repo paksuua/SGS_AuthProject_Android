@@ -29,6 +29,7 @@ class SigninFragment: Fragment() {
     }
 
     private fun initUI() {
+        // 로그인
         binding.tvSignin.setOnClickListener {
             if(inputCheck()){
                 viewModel.logIn(
@@ -39,39 +40,31 @@ class SigninFragment: Fragment() {
             }
         }
 
+        // 회원가입 화면으로 이동
         binding.tvSigninToSignup.setOnClickListener {
             findNavController().navigate(R.id.navigation_signup)
         }
-
-        viewModel.token.observe(
-            viewLifecycleOwner,
-            { token ->
-                if(token.isNotEmpty()){
-                    SigninSignupApplication.prefs.token = token
-                    Snackbar.make(binding.root, "로그인 성공했습니다.", Snackbar.LENGTH_LONG).show()
-                }else{
-
-                }
-            }
-        )
 
         viewModel.isSuccess.observe(
             viewLifecycleOwner,
             {
                 if(!it){
                     Snackbar.make(binding.root, "로그인 실패했습니다.", Snackbar.LENGTH_LONG).show()
+                }else if(viewModel.token.value != ""){
+                    SigninSignupApplication.prefs.token = viewModel.token.value.toString()
+                    Snackbar.make(binding.root, "로그인 성공했습니다.", Snackbar.LENGTH_LONG).show()
                 }
             }
         )
     }
 
     private fun inputCheck():Boolean{
+        var result = true
         // 빈칸 체크
-        if (binding.edtId.text.isNotEmpty() && binding.edtPwd.text.isNotEmpty()) {
+        if (binding.edtId.text.isNullOrEmpty() || binding.edtPwd.text.isNullOrEmpty()) {
             Snackbar.make(binding.root, "입력란을 확인하세요", Snackbar.LENGTH_LONG).show()
-            return false
+            result = false
         }
-
-        return true
+        return result
     }
 }

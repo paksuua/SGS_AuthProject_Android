@@ -7,13 +7,14 @@ import androidx.lifecycle.ViewModel
 import com.example.signinsignup_android.data.SignDataSource
 import com.example.signinsignup_android.data.request.SignupRequestDto
 import com.example.signinsignup_android.data.response.SignupResponseDto
+import com.example.signinsignup_android.util.SingleLiveEvent
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
 
 class SignupViewModel : ViewModel() {
     // 회원가입 성공 여부
-    private val _isSuccess: MutableLiveData<Boolean> = MutableLiveData(null)
+    private val _isSuccess: SingleLiveEvent<Boolean> = SingleLiveEvent()
     val isSuccess: LiveData<Boolean> = _isSuccess
 
     fun signUp(request: SignupRequestDto) {
